@@ -1,2 +1,2 @@
-# snake
-Basic snake game made in pygame
+# Snake
+Basic snake game made in Pygame
