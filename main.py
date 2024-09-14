@@ -25,11 +25,12 @@ def main():
         text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
         screen.blit(text, text_rect)
         pygame.display.flip()
-        pygame.time.wait(5000)
+        pygame.time.wait(2500)
 
     def win():
         screen = pygame.display.get_surface()
-        text = FONT.render('YOU WIN!', True, (255, 0, 0))
+        screen.fill('black', screen.get_rect())
+        text = FONT.render('YOU WIN!', True, (255, 255, 255))
         text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
         screen.blit(text, text_rect)
         pygame.display.flip()
@@ -128,8 +129,9 @@ def main():
             running = False
 
         screen.fill((0, 0, 0))
-        SCORE_DISPLAY = FONT.render(f'Score: {SCORE}     Length: {SNAKE_LENGTH}', True, 'white')
-        screen.blit(SCORE_DISPLAY, (0,0))
+        SCORE_DISPLAY = FONT.render(f'Score: {SCORE}', True, 'white')
+        score_rect = SCORE_DISPLAY.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+        screen.blit(SCORE_DISPLAY, (score_rect.x, 0))
         screen.blit(food, (FOOD_X, FOOD_Y))
         [(screen.blit(snake, location)) for location in SNAKE_BODY]
 
