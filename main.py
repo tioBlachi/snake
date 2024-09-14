@@ -17,6 +17,24 @@ def main():
             if (x, y) not in SNAKE_BODY:
                 return x, y
 
+    def game_over():
+        GAME_OVER_SFX.play()
+        screen = pygame.display.get_surface()
+        screen.fill('black', screen.get_rect())
+        text = FONT.render('Game Over', True, (255, 0, 0))
+        text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+        pygame.time.wait(5000)
+
+    def win():
+        screen = pygame.display.get_surface()
+        text = FONT.render('YOU WIN!', True, (255, 0, 0))
+        text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+        pygame.time.wait(5000)
+
     WIDTH, HEIGHT = 800, 800
     TILE_SIZE = 50
     SCORE = 0
@@ -29,8 +47,13 @@ def main():
     screen = pygame.display.set_mode(SCREEN_SIZE)
     pygame.display.set_caption('Snake')
 
+    ''' Sound Effect from <a href="https://pixabay.com/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=14588">Pixabay</a> '''
+    CHOMP_SFX = pygame.mixer.Sound(os.path.join('assets', 'sounds', 'eat.mp3'))
+
+    ''' Sound Effect from <a href="https://pixabay.com/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=43894">Pixabay</a> '''
+    GAME_OVER_SFX = pygame.mixer.Sound(os.path.join('assets', 'sounds', 'game_over.mp3'))
+
     food = pygame.transform.scale(pygame.image.load(os.path.join('assets', 'images', 'mushroom.png')), FOOD_SIZE)
-    food_rect = food.get_rect()
     FOOD_X = randrange(0, WIDTH - TILE_SIZE, TILE_SIZE)
     FOOD_Y = randrange(TILE_SIZE, HEIGHT - TILE_SIZE, TILE_SIZE)
     SNAKE_X = randrange(0, WIDTH - TILE_SIZE, TILE_SIZE)
@@ -88,6 +111,7 @@ def main():
         if SNAKE_X == FOOD_X and SNAKE_Y == FOOD_Y:
             SNAKE_LENGTH += 1
             SCORE += 1
+            CHOMP_SFX.play()
             FOOD_X, FOOD_Y = place_food()
 
         # check to see if snake is moving before popping off index 0
@@ -100,7 +124,7 @@ def main():
                 SNAKE_BODY[-1] = (SNAKE_X, SNAKE_Y)
 
         if check_self_eating():
-            print("Game Over!")
+            game_over()
             running = False
 
         screen.fill((0, 0, 0))
